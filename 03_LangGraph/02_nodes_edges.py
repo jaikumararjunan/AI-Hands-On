@@ -3,26 +3,22 @@ from typing import TypedDict
 from langgraph.graph import StateGraph, START, END
 
 
-class State(TypedDict):
+class State(TypedDict, total=False):
     question: str
-
     cleaned_question: str
-
     answer: str
 
 
 def clean_question(state: State):
-
     cleaned = state["question"].strip().lower()
 
     return {"cleaned_question": cleaned}
 
 
 def create_answer(state: State):
+    cleaned_question = state["cleaned_question"]
 
-    question = state["cleaned_question"]
-
-    return {"answer": f"Processing: {question}"}
+    return {"answer": f"Processing question: {cleaned_question}"}
 
 
 builder = StateGraph(State)
@@ -45,5 +41,7 @@ graph = builder.compile()
 
 result = graph.invoke({"question": "   WHAT IS REVENUE?   "})
 
+
+print("===== FINAL STATE =====")
 
 print(result)

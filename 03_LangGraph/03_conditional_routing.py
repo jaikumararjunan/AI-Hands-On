@@ -5,14 +5,11 @@ from langgraph.graph import StateGraph, START, END
 
 class SalesState(TypedDict, total=False):
     question: str
-
     route: str
-
     answer: str
 
 
 def classify(state: SalesState):
-
     question = state["question"].lower()
 
     if "predict" in question or "forecast" in question:
@@ -29,24 +26,20 @@ def classify(state: SalesState):
     return {"route": "general"}
 
 
-def data_answer(state: SalesState):
+def choose_route(state: SalesState):
+    return state["route"]
 
-    return {"answer": "Use Pandas for this question."}
+
+def data_answer(state: SalesState):
+    return {"answer": "Route selected: Pandas / Data Science"}
 
 
 def general_answer(state: SalesState):
-
-    return {"answer": "Use the LLM for this question."}
+    return {"answer": "Route selected: General LLM"}
 
 
 def ml_answer(state: SalesState):
-
-    return {"answer": "Use the ML model for this question."}
-
-
-def choose_route(state: SalesState):
-
-    return state["route"]
+    return {"answer": "Route selected: Machine Learning"}
 
 
 builder = StateGraph(SalesState)
@@ -60,11 +53,14 @@ builder.add_node("general", general_answer)
 
 builder.add_node("ml", ml_answer)
 
+
 builder.add_edge(START, "classify")
+
 
 builder.add_conditional_edges(
     "classify", choose_route, {"data": "data", "general": "general", "ml": "ml"}
 )
+
 
 builder.add_edge("data", END)
 
@@ -72,7 +68,9 @@ builder.add_edge("general", END)
 
 builder.add_edge("ml", END)
 
+
 graph = builder.compile()
+
 
 questions = [
     "Which product has highest revenue?",
@@ -85,6 +83,7 @@ for question in questions:
     result = graph.invoke({"question": question})
 
     print()
+    print("=" * 60)
 
     print("Question:", question)
 

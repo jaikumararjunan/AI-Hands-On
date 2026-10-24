@@ -1,0 +1,10 @@
+product,region,quantity,price
+Laptop,South,4,60000
+Laptop,North,3,62000
+Phone,South,10,25000
+Phone,North,8,27000
+Tablet,South,5,30000
+Tablet,North,6,32000
+Laptop,West,2,61000
+Phone,West,12,26000
+Tablet,West,4,31000

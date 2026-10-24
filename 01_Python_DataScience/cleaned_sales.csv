@@ -1,0 +1,10 @@
+order_id,product,region,quantity,price
+1,Laptop,South,4.0,60000.0
+2,Laptop,North,3.0,62000.0
+3,Phone,South,10.0,25000.0
+4,Phone,North,0.0,27000.0
+5,Tablet,South,5.0,30000.0
+6,Tablet,North,-2.0,32000.0
+7,Laptop,West,2.0,0.0
+8,Phone,West,12.0,26000.0
+9,Tablet,West,4.0,0.0

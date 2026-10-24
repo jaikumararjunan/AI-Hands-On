@@ -9,7 +9,5 @@ response = model.invoke(
     "Explain gross revenue in simple English."
 )
 
+print(type(response))
 print(type(response.content))
-print(response)
-print("=========================")
-print(response.content)

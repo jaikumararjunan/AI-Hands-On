@@ -70,13 +70,14 @@ Write-Host "Dataset found."
 # ---------------------------------------------------
 
 $scripts = @(
+    "01_test_ollama.py",
     "02_langchain_model.py",
     "03_prompt.py",
     "04_structured_output.py",
     "05_tools.py",
-    "06_sales_tools.py",
-    "08_tool_calling.py",
-    "07_agent.py",
+    "06_test_sales_tools.py",
+    "07_tool_calling.py",
+    "08_agent.py",
     "09_final_demo.py"
 )
 

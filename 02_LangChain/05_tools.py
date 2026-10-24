@@ -9,23 +9,31 @@ def multiply(
     """
     Multiply two numbers.
 
-    Use this tool when two numeric values
-    need to be multiplied.
+    Use this tool when multiplication
+    is required.
     """
 
     return number1 * number2
 
 
-print("Tool name:", multiply.name)
+if __name__ == "__main__":
 
-print("Tool description:")
-print(multiply.description)
+    print(
+        "Tool name:",
+        multiply.name
+    )
 
+    print(
+        "Description:",
+        multiply.description
+    )
 
-result = multiply.invoke({
-    "number1": 10,
-    "number2": 20
-})
+    result = multiply.invoke({
+        "number1": 10,
+        "number2": 20
+    })
 
-
-print("Result:", result)
+    print(
+        "Result:",
+        result
+    )

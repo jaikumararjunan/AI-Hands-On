@@ -38,3 +38,20 @@ def test_chunk_text_has_overlap_and_no_empty_chunks():
     assert chunks
     assert all(chunk.strip() for chunk in chunks)
     assert len(chunks) >= 4
+
+
+def test_agent_returns_deterministic_fallback_when_graph_raises(monkeypatch):
+    from app.services.agent import CommerceAgent
+
+    agent = CommerceAgent()
+
+    def fail_graph(_state):
+        raise RuntimeError("simulated graph runtime failure")
+
+    monkeypatch.setattr(agent.graph, "invoke", fail_graph)
+    result = agent.ask("I need a laptop for local AI development and a monitor")
+
+    assert result["degraded"] is True
+    assert result["route"] == "search"
+    assert "Product matches" in result["answer"]
+    assert result["diagnostic"] == "RuntimeError"

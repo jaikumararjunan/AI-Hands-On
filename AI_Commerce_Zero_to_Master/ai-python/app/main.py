@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI, Query
 
 from app.models import FraudRequest, ForecastRequest, AgentRequest, PricingRequest, ChurnRequest, ReturnRiskRequest, ReviewRequest, MarketingDecisionRequest, CampaignSuggestionRequest
@@ -16,7 +18,11 @@ from app.services.vector_rag import VectorRagService
 from app.llm.providers import build_llm_provider
 from app.observability import configure_prometheus, configure_opentelemetry
 
-app = FastAPI(title="AI Commerce Intelligence Service", version="0.1.0")
+app = FastAPI(
+    title="AI Commerce Intelligence Service",
+    version="0.1.0",
+    root_path=os.getenv("FASTAPI_ROOT_PATH", ""),
+)
 
 search_service = SemanticSearchService()
 recommendation_service = RecommendationService()
@@ -45,32 +51,40 @@ def get_vector_rag_service():
         vector_rag_service = VectorRagService()
     return vector_rag_service
 
+
 configure_prometheus(app)
 configure_opentelemetry(app)
+
 
 @app.get("/health")
 def health():
     return {"status": "UP", "service": "ai-python"}
 
+
 @app.get("/ai/search")
 def search(q: str = Query(min_length=2), limit: int = 5):
     return {"query": q, "results": search_service.search(q, limit)}
+
 
 @app.get("/ai/recommendations/{customer_id}")
 def recommendations(customer_id: str, limit: int = 4):
     return {"customer_id": customer_id, "recommendations": recommendation_service.recommend(customer_id, limit)}
 
+
 @app.post("/ai/fraud/score")
 def fraud_score(request: FraudRequest):
     return fraud_service.score(request.model_dump())
+
 
 @app.post("/ai/forecast")
 def forecast(request: ForecastRequest):
     return forecast_service.forecast(request.daily_sales, request.horizon_days)
 
+
 @app.get("/ai/rag/retrieve")
 def rag_retrieve(q: str):
     return {"question": q, "documents": rag_service.retrieve(q)}
+
 
 @app.post("/ai/agent/ask")
 def agent_ask(request: AgentRequest):
@@ -81,21 +95,26 @@ def agent_ask(request: AgentRequest):
 def pricing_recommend(request: PricingRequest):
     return pricing_service.recommend(**request.model_dump())
 
+
 @app.post("/ai/churn/score")
 def churn_score(request: ChurnRequest):
     return churn_service.score(request.model_dump())
+
 
 @app.post("/ai/returns/score")
 def return_risk(request: ReturnRiskRequest):
     return return_risk_service.score(request.model_dump())
 
+
 @app.post("/ai/reviews/analyze")
 def review_analyze(request: ReviewRequest):
     return review_service.analyze(request.text)
 
+
 @app.post("/ai/vector/index")
 def vector_index():
     return get_vector_rag_service().index_knowledge()
+
 
 @app.get("/ai/vector/search")
 def vector_search(q: str, limit: int = 4):
@@ -107,9 +126,11 @@ def vector_search(q: str, limit: int = 4):
         ],
     }
 
+
 @app.get("/ai/rag/answer")
 def vector_rag_answer(q: str, limit: int = 4):
     return get_vector_rag_service().answer(q, limit=limit)
+
 
 @app.get("/ai/llm/raw")
 def raw_llm_chat(q: str):
@@ -119,10 +140,10 @@ def raw_llm_chat(q: str):
         return {"error": str(error), "hint": "Start Ollama and ensure OLLAMA_MODEL exists."}
 
 
-
 @app.post("/ai/marketing/decision")
 def marketing_decision(request: MarketingDecisionRequest):
     return marketing_service.decide(request.model_dump())
+
 
 @app.post("/ai/marketing/campaign-suggestions")
 def campaign_suggestions(request: CampaignSuggestionRequest):

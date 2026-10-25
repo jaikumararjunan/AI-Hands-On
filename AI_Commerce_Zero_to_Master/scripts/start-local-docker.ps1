@@ -10,6 +10,36 @@ $Root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $Compose = Join-Path $Root 'infra\docker-compose.local.yml'
 $EnvFile = Join-Path $Root '.env.local'
 
+function Invoke-DockerNative {
+  param(
+    [string[]]$Arguments,
+    [switch]$Quiet,
+    [switch]$AllowFailure
+  )
+
+  # Windows PowerShell 5 can turn normal Docker stderr progress (for example
+  # "Container ... Stopping") into NativeCommandError when
+  # $ErrorActionPreference='Stop'. Run native Docker commands with Continue,
+  # merge stderr/stdout, and decide success only from the native exit code.
+  $previousPreference = $ErrorActionPreference
+  try {
+    $ErrorActionPreference = 'Continue'
+    if ($Quiet) {
+      & docker @Arguments 2>&1 | Out-Null
+    } else {
+      & docker @Arguments 2>&1 | ForEach-Object { Write-Host $_ }
+    }
+    $exitCode = $LASTEXITCODE
+  } finally {
+    $ErrorActionPreference = $previousPreference
+  }
+
+  if ($exitCode -ne 0 -and -not $AllowFailure) {
+    throw "Docker command failed with exit code $exitCode: docker $($Arguments -join ' ')"
+  }
+  return $exitCode
+}
+
 function Test-Port([int]$Port) {
   if ($Port -lt 1 -or $Port -gt 65535) { return $false }
   try {
@@ -99,15 +129,22 @@ if (-not (Get-Command docker -ErrorAction SilentlyContinue)) {
   throw 'Docker CLI not found. Install/start Docker Desktop first.'
 }
 
-docker info *> $null
-if ($LASTEXITCODE -ne 0) { throw 'Docker Desktop daemon is not ready.' }
+if ((Invoke-DockerNative -Arguments @('info') -Quiet -AllowFailure) -ne 0) {
+  throw 'Docker Desktop daemon is not ready.'
+}
 
-docker compose version *> $null
-if ($LASTEXITCODE -ne 0) { throw 'Docker Compose plugin is unavailable.' }
+if ((Invoke-DockerNative -Arguments @('compose','version') -Quiet -AllowFailure) -ne 0) {
+  throw 'Docker Compose plugin is unavailable.'
+}
 
+# Stop only the previous AI Commerce project. This frees its old host ports while leaving unrelated containers alone.
 if (Test-Path $EnvFile) {
   Write-Host 'Stopping previous AI Commerce stack so its ports can be reused...' -ForegroundColor Cyan
-  docker compose --env-file $EnvFile -f $Compose --profile full down --remove-orphans 2>$null | Out-Null
+  $downArgs = @('compose','--env-file',$EnvFile,'-f',$Compose,'--profile','full','down','--remove-orphans')
+  $downExit = Invoke-DockerNative -Arguments $downArgs -Quiet -AllowFailure
+  if ($downExit -ne 0) {
+    Write-Warning "Previous AI Commerce stack returned exit code $downExit while stopping. Continuing to port checks; any still-bound port will be detected automatically."
+  }
 }
 
 Write-Host ""
@@ -160,17 +197,17 @@ $args = @('compose','--env-file',$EnvFile,'-f',$Compose)
 if ($Full) { $args += @('--profile','full') }
 $args += @('up','-d','--build','--remove-orphans')
 
-& docker @args
-if ($LASTEXITCODE -ne 0) {
+$upExit = Invoke-DockerNative -Arguments $args -AllowFailure
+if ($upExit -ne 0) {
   Write-Host ""
   Write-Host 'Docker compose failed. Collecting diagnostics...' -ForegroundColor Red
-  & docker compose --env-file $EnvFile -f $Compose --profile full ps -a
+  [void](Invoke-DockerNative -Arguments @('compose','--env-file',$EnvFile,'-f',$Compose,'--profile','full','ps','-a') -AllowFailure)
   Write-Host ''
   Write-Host '=== AI PYTHON LOGS ===' -ForegroundColor Cyan
-  & docker compose --env-file $EnvFile -f $Compose logs --tail 120 ai-python
+  [void](Invoke-DockerNative -Arguments @('compose','--env-file',$EnvFile,'-f',$Compose,'logs','--tail','120','ai-python') -AllowFailure)
   Write-Host ''
   Write-Host '=== JAVA LOGS ===' -ForegroundColor Cyan
-  & docker compose --env-file $EnvFile -f $Compose logs --tail 160 commerce-java
+  [void](Invoke-DockerNative -Arguments @('compose','--env-file',$EnvFile,'-f',$Compose,'logs','--tail','160','commerce-java') -AllowFailure)
   throw 'Docker deployment failed. Diagnostics are shown above. You can also run DOCKER_STATUS.bat.'
 }
 
@@ -188,22 +225,22 @@ function Wait-Http([string]$Url, [int]$Attempts = 75) {
 $aiHealthy = Wait-Http "http://localhost:$($ports.AI_PORT)/health"
 if (-not $aiHealthy) {
   Write-Warning 'Python health endpoint is not ready. Showing Python container diagnostics now.'
-  & docker compose --env-file $EnvFile -f $Compose ps -a ai-python
-  & docker compose --env-file $EnvFile -f $Compose logs --tail 160 ai-python
+  [void](Invoke-DockerNative -Arguments @('compose','--env-file',$EnvFile,'-f',$Compose,'ps','-a','ai-python') -AllowFailure)
+  [void](Invoke-DockerNative -Arguments @('compose','--env-file',$EnvFile,'-f',$Compose,'logs','--tail','160','ai-python') -AllowFailure)
 }
 
 $javaHealthy = Wait-Http "http://localhost:$($ports.JAVA_PORT)/actuator/health"
 $appHealthy = Wait-Http "http://localhost:$($ports.APP_PORT)" 45
 if (-not $javaHealthy) {
   Write-Warning 'Java health endpoint is not ready. Showing Java container diagnostics now.'
-  & docker compose --env-file $EnvFile -f $Compose ps -a commerce-java
-  & docker compose --env-file $EnvFile -f $Compose logs --tail 120 commerce-java
+  [void](Invoke-DockerNative -Arguments @('compose','--env-file',$EnvFile,'-f',$Compose,'ps','-a','commerce-java') -AllowFailure)
+  [void](Invoke-DockerNative -Arguments @('compose','--env-file',$EnvFile,'-f',$Compose,'logs','--tail','120','commerce-java') -AllowFailure)
 }
 
 if (-not $appHealthy) {
   Write-Warning 'Commerce application URL is not ready. Showing app container diagnostics now.'
-  & docker compose --env-file $EnvFile -f $Compose ps -a commerce-app
-  & docker compose --env-file $EnvFile -f $Compose logs --tail 100 commerce-app
+  [void](Invoke-DockerNative -Arguments @('compose','--env-file',$EnvFile,'-f',$Compose,'ps','-a','commerce-app') -AllowFailure)
+  [void](Invoke-DockerNative -Arguments @('compose','--env-file',$EnvFile,'-f',$Compose,'logs','--tail','100','commerce-app') -AllowFailure)
 }
 
 Write-Host ""

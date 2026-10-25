@@ -1,0 +1,20 @@
+fastapi==0.142.4
+uvicorn[standard]>=0.30
+pydantic>=2.9
+numpy>=2.0
+pandas>=2.2
+scikit-learn>=1.5
+prometheus-fastapi-instrumentator>=7.0
+opentelemetry-api>=1.39
+opentelemetry-sdk>=1.39
+opentelemetry-exporter-otlp>=1.39
+opentelemetry-instrumentation-fastapi>=0.60b0
+langchain>=1.0
+langchain-ollama>=1.0
+langgraph>=1.0
+mlflow-tracing>=3.12
+httpx>=0.27
+# MCP + vector database learning layer
+mcp[cli]>=2,<3
+qdrant-client>=1.15
+psycopg[binary]>=3.2

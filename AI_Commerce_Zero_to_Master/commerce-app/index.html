@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AI Commerce Store</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="logo">AC</span><div><strong>AI Commerce Store</strong><small>Customer application · Java + Python AI</small></div></div>
+    <div class="customer-box"><label>Customer</label><input id="customerId" value="C100" /></div>
+    <button id="cartButton" class="cart-btn">Cart <span id="cartCount">0</span></button>
+  </header>
+
+  <nav class="nav">
+    <button class="nav-item active" data-view="shop">Shop</button>
+    <button class="nav-item" data-view="ai">AI Shopping Copilot</button>
+    <button class="nav-item" data-view="status">System Status</button>
+  </nav>
+
+  <main>
+    <section id="shopView" class="view active">
+      <div class="hero">
+        <div>
+          <span class="eyebrow">RUNNING APPLICATION</span>
+          <h1>Shop the AI-native commerce demo</h1>
+          <p>Products and checkout are served by Java Spring Boot. Search, recommendations and AI answers are powered by the Python intelligence service.</p>
+          <div class="hero-actions">
+            <input id="searchInput" placeholder="Search laptops, audio, monitors…" />
+            <button id="searchButton">AI Search</button>
+            <button id="resetSearch" class="secondary">All products</button>
+          </div>
+        </div>
+        <div class="hero-card"><span>Live flow</span><b>Browser → Nginx → Java → Python AI → Vector/ML</b><small>No learning-site proxy: this is the actual commerce UI.</small></div>
+      </div>
+
+      <div class="section-title"><div><h2 id="productHeading">Products</h2><p id="productSubheading">Loaded from <code>/api/products</code></p></div><button id="recommendButton" class="secondary">Recommend for customer</button></div>
+      <div id="message" class="message hidden"></div>
+      <div id="products" class="product-grid"></div>
+    </section>
+
+    <section id="aiView" class="view">
+      <div class="panel wide">
+        <span class="eyebrow">GENAI / AGENT</span>
+        <h2>AI Shopping Copilot</h2>
+        <p>Ask product, policy or architecture-style questions. The request goes through Java <code>/api/ai/ask</code> into the Python agent service.</p>
+        <div class="ask-row"><textarea id="aiQuestion" rows="4">I need a laptop for local AI development and a monitor. What should I consider?</textarea><button id="askAiButton">Ask AI</button></div>
+        <pre id="aiAnswer" class="result">AI response will appear here.</pre>
+      </div>
+      <div class="panel-grid">
+        <div class="panel"><h3>Semantic search</h3><p>Uses Java → Python AI integration.</p><code>GET /api/ai/search?q=...</code></div>
+        <div class="panel"><h3>Recommendations</h3><p>Try customer <b>C100</b>, <b>C200</b> or <b>C300</b>.</p><code>GET /api/ai/recommendations/{customer}</code></div>
+        <div class="panel"><h3>Direct Python API</h3><p>The application reverse-proxies Python under <code>/python/</code>.</p><a href="/python/docs" target="_blank">Open Python Swagger</a></div>
+      </div>
+    </section>
+
+    <section id="statusView" class="view">
+      <div class="section-title"><div><h2>Runtime Status</h2><p>These checks use the same Docker network as the application.</p></div><button id="refreshStatus">Refresh</button></div>
+      <div id="statusGrid" class="status-grid"></div>
+      <div class="panel"><h3>Useful API links</h3><div class="links"><a href="/api/products" target="_blank">Java Products JSON</a><a href="/java-health" target="_blank">Java Health</a><a href="/python/health" target="_blank">Python Health</a><a href="/python/docs" target="_blank">Python Swagger</a></div></div>
+    </section>
+  </main>
+
+  <aside id="cartDrawer" class="drawer">
+    <div class="drawer-head"><div><span class="eyebrow">CHECKOUT</span><h2>Your cart</h2></div><button id="closeCart" class="icon-btn">×</button></div>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="checkout-box">
+      <label>Coupon <input id="couponCode" placeholder="Optional" /></label>
+      <label>Payment token <input id="paymentMethod" value="tok_demo_visa" /></label>
+      <button id="checkoutButton" class="full">Checkout with mock gateway</button>
+      <button id="clearCart" class="secondary full">Clear cart</button>
+    </div>
+    <pre id="checkoutResult" class="result small hidden"></pre>
+  </aside>
+  <div id="overlay" class="overlay"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

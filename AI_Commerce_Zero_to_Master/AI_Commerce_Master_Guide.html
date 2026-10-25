@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AI Commerce Zero to Master — START HERE</title>
+<style>
+:root { --bg:#07111f; --panel:#0d1b2a; --panel2:#10243b; --text:#eaf1f8; --muted:#9fb2c7; --accent:#5eead4; --accent2:#60a5fa; --warn:#fbbf24; --ok:#34d399; --border:#203a55; --code:#050a12; }
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,#06101c,#091827 45%,#07111f);color:var(--text);line-height:1.6}
+a{color:var(--accent2);text-decoration:none} a:hover{text-decoration:underline}
+.container{width:min(1180px,92vw);margin:auto} header{padding:64px 0 36px;border-bottom:1px solid var(--border);background:radial-gradient(circle at 20% 0%,#12375a 0,transparent 38%),radial-gradient(circle at 90% 20%,#0c4c46 0,transparent 30%)}
+.badge{display:inline-block;padding:6px 10px;border:1px solid #2f5f73;border-radius:999px;color:var(--accent);font-size:13px;background:#0a2130}
+h1{font-size:clamp(36px,6vw,72px);line-height:1.02;margin:16px 0 14px;max-width:980px} .lead{font-size:20px;color:#c4d2e1;max-width:900px}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px} .btn{display:inline-block;padding:11px 16px;border-radius:10px;background:var(--accent);color:#04201d;font-weight:700} .btn.secondary{background:#172b42;color:var(--text);border:1px solid var(--border)}
+nav{position:sticky;top:0;z-index:20;background:rgba(7,17,31,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)} nav .container{display:flex;gap:18px;overflow:auto;padding:10px 0;font-size:14px;white-space:nowrap}
+section{padding:48px 0;border-bottom:1px solid rgba(32,58,85,.55)} h2{font-size:32px;margin:0 0 12px} h3{margin-top:32px;color:#dbeafe} p{color:#c7d4e2}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px} .card{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--border);border-radius:14px;padding:18px}
+.card h3,.card h4{margin-top:0} .muted{color:var(--muted)} .ok{color:var(--ok)} .warn{color:var(--warn)}
+.flow{overflow:auto;background:#081522;border:1px solid var(--border);padding:22px;border-radius:14px;font-family:Consolas,monospace;color:#d8eefc;white-space:pre;line-height:1.45}
+.code-wrap{position:relative;margin:14px 0} pre{margin:0;overflow:auto;background:var(--code);border:1px solid #1d344c;border-radius:12px;padding:18px;color:#d6e7f7;line-height:1.5} .copy{position:absolute;right:9px;top:9px;border:1px solid #304a65;background:#11263b;color:#dce9f5;border-radius:7px;padding:5px 9px;cursor:pointer}
+table{width:100%;border-collapse:collapse;margin:16px 0;background:#0a1827} th,td{border:1px solid var(--border);padding:10px;text-align:left;vertical-align:top} th{background:#10263c;color:#eaf4ff}
+.docs{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:14px} .doc-card{display:flex;gap:14px;background:#0b1b2c;border:1px solid var(--border);border-radius:14px;padding:15px;color:inherit} .doc-card:hover{border-color:#4c85ad;text-decoration:none;transform:translateY(-1px)} .doc-card h4{margin:0 0 6px;color:#eaf4ff} .doc-card p{font-size:14px;margin:0 0 8px;color:var(--muted)} .doc-card span{font-size:13px;color:var(--accent)} .doc-num{min-width:42px;height:42px;border-radius:11px;display:grid;place-items:center;background:#123453;color:var(--accent);font-weight:800}
+.step{display:grid;grid-template-columns:46px 1fr;gap:14px;margin:14px 0} .step-num{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#164264;color:var(--accent);font-weight:800} .callout{border-left:4px solid var(--accent);background:#0b2130;padding:14px 18px;border-radius:8px;margin:18px 0} .callout.warn{border-left-color:var(--warn)}
+.endpoint{font-family:Consolas,monospace;color:#bae6fd} footer{padding:36px 0;color:var(--muted)}
+@media print{nav,.copy,.actions{display:none} body{background:white;color:#111} p,.muted{color:#333} .card,.doc-card,.flow,pre,table{break-inside:avoid}}
+</style>
+</head>
+<body><div id="actual-application" style="margin:18px auto;max-width:1180px;padding:18px 22px;border:2px solid #2563eb;border-radius:14px;background:#eff6ff;color:#0f172a;font-family:Arial,sans-serif"><strong style="font-size:20px">🛒 Actual E-commerce Application</strong><p style="margin:8px 0">After Docker startup open the <b>APPLICATION</b> URL printed by the launcher (preferred <code>http://localhost:9200</code>). This is separate from the learning portal.</p><p style="margin:8px 0"><a href="commerce-app/index.html">View bundled storefront source</a> · <a href="APPLICATION_GUIDE.md">Application guide</a> · <a href="START_FULL_LOCAL_DOCKER_INTERACTIVE.bat">Start Docker with selectable ports</a> · <a href="OPEN_APPLICATION.bat">Windows application launcher</a></p></div>
+<header id="top"><div class="container">
+<span class="badge">AI Commerce Control Center · Zero → Master · Single Offline Bundle</span>
+<h1>START HERE — Zero to Master Learning, Code & Local Deployment</h1>
+<p class="lead">One offline entry point for the entire learning system: theory, visual architecture, hands-on Java + Python code, mock data, payments, data lake/warehouse, ML/DL, GenAI, RAG, MCP, agents, observability, environments, testing and role-based learning from fresher to Principal Architect.</p>
+<div class="actions"><a class="btn" href="README.md">Project README</a><a class="btn secondary" href="VALIDATION_REPORT.md">Validation Report</a><a class="btn secondary" href="learning-site/index.html">Learning Site</a><a class="btn secondary" href="#local">Local Deployment</a></div>
+</div></header>
+<nav><div class="container"><a href="#overview">Overview</a><a href="#architecture">Architecture</a><a href="#deliverables">Deliverables</a><a href="#local">Local Deploy</a><a href="#testing">Testing</a><a href="#mock">Mock Data</a><a href="#ai">AI / MCP / RAG</a><a href="#observability">Observability</a><a href="#learning">Learning Tracks</a><a href="#source-index">Source Index</a><a href="#troubleshooting">Troubleshooting</a></div></nav>
+
+<section id="overview"><div class="container">
+<h2>1. What this project now contains</h2>
+<div class="grid">
+<div class="card"><h3>Commerce Core · Java</h3><p>Spring Boot service for catalog, cart, checkout, orders, payments, promotions, events and Java MCP tools.</p><p class="muted">Port 8080</p></div>
+<div class="card"><h3>AI Intelligence · Python</h3><p>FastAPI service for search, recommendations, fraud, forecasting, pricing, churn, returns, reviews, marketing, vector search, RAG and agent workflows.</p><p class="muted">Port 8000</p></div>
+<div class="card"><h3>Data Platform</h3><p>Bronze → Silver → Gold learning pipeline, SQLite warehouse, SQL star schema and future feature snapshots.</p></div>
+<div class="card"><h3>AI Platform</h3><p>LLMs, Ollama, embeddings, in-memory vectors, Qdrant, pgvector, LangChain, LangGraph, MCP and DL examples.</p></div>
+<div class="card"><h3>Production Platform</h3><p>Kafka, PostgreSQL/pgvector, Redis, MLflow, OpenTelemetry, Prometheus, Grafana and Kubernetes examples.</p></div>
+<div class="card"><h3>Learning Platform</h3><p>14 DOCX guides, an HTML learning portal, role-based tracks and deterministic cross-service mock data.</p></div>
+</div>
+<h3>How the project evolved</h3>
+<div class="flow">4-Day Practice
+  Day 1 Python / Pandas
+  Day 2 Data Science / ML
+  Day 3 LangChain / Tools / Agents
+  Day 4 LangGraph / State / Routing
+            │
+            ▼
+AI-Native E-commerce
+  Java transactional services + Python intelligence
+            │
+            ▼
+MCP + LLM + Vector DB + RAG
+            │
+            ▼
+Payments + Historical Data + Warehouse + Marketing
+            │
+            ▼
+Dev / QA / UAT / Pre-Prod / Prod + SRE / Observability
+            │
+            ▼
+Cross-Service Mock Data + Chaos Scenarios</div>
+</div></section>
+
+<section id="architecture"><div class="container">
+<h2>2. Complete architecture</h2>
+<div class="flow">Web / Mobile / Voice / Seller / Admin / Agent
+                       │
+                       ▼
+               API Gateway / BFF
+                       │
+           ┌───────────┴───────────┐
+           ▼                       ▼
+ Java Commerce Core          Python AI Service
+ Catalog / Cart / Order      Search / RecSys / Fraud
+ Checkout / Payment          Forecast / Churn / Returns
+ Promo / Domain Events       GenAI / RAG / Agent / MCP
+           │                       │
+           ├──────────┬────────────┤
+           ▼          ▼            ▼
+         Kafka    PostgreSQL     Vector DB
+                    /pgvector    Qdrant
+           │          │            │
+           └──────────┼────────────┘
+                      ▼
+                Data Platform
+       Bronze → Silver → Gold → Warehouse
+                      │
+                      ▼
+            ML / DL / Feature Views
+                      │
+                      ▼
+         OpenTelemetry / Prometheus
+              Grafana / MLflow</div>
+<div class="callout"><strong>Core rule:</strong> transactional Java services remain the system of record. ML/DL predicts, GenAI explains/reasons, RAG grounds knowledge, MCP exposes governed tools, and LangGraph orchestrates stateful AI workflows.</div>
+</div></section>
+
+<section id="deliverables"><div class="container">
+<h2>3. Latest deliverables</h2>
+<p>These links work after you extract the ZIP because they are relative to this HTML file.</p>
+<div class="docs"><a class="doc-card" href="docs/01_Architecture_and_Flow_Guide.docx"><div class="doc-num">01</div><div><h4>Architecture & Flow Guide</h4><p>Java + Python boundaries, event flow, AI platform and learner mental models.</p><span>Open DOCX →</span></div></a>
+<a class="doc-card" href="docs/02_Developer_Setup_and_Runbook.docx"><div class="doc-num">02</div><div><h4>Developer Setup & Runbook</h4><p>Local environment, commands and developer workflow.</p><span>Open DOCX →</span></div></a>
+<a class="doc-card" href="docs/03_Ecommerce_AI_Feature_Catalog.docx"><div class="doc-num">03</div><div><h4>E-commerce AI Feature Catalog</h4><p>Legacy and AI-native commerce features across the customer lifecycle.</p><span>Open DOCX →</span></div></a>
+<a class="doc-card" href="docs/04_Observability_Monitoring_and_Production_Guide.docx"><div class="doc-num">04</div><div><h4>Observability & Production</h4><p>Logs, metrics, traces, SLOs, monitoring and production thinking.</p><span>Open DOCX →</span></div></a>
+<a class="doc-card" href="docs/05_MCP_LLM_Vector_DB_RAG_From_Scratch.docx"><div class="doc-num">05</div><div><h4>MCP, LLM, Vector DB & RAG</h4><p>Embeddings, cosine similarity, Qdrant, pgvector, RAG and MCP from first principles.</p><span>Open DOCX →</span></div></a>
+<a class="doc-card" href="docs/06_AI_Skills_Learning_Curve_and_Roadmap.docx"><div class="doc-num">06</div><div><h4>AI Skills Learning Curve</h4><p>Missing AI skills, evaluation, security, multimodal, inference and AI SRE roadmap.</p><span>Open DOCX →</span></div></a>
+<a class="doc-card" href="docs/07_Java_Python_MCP_Vector_RAG_Code_Walkthrough.docx"><div class="doc-num">07</div><div><h4>Java + Python Code Walkthrough</h4><p>Line-of-flow guide for MCP/vector/RAG implementation.</p><span>Open DOCX →</span></div></a>
+<a class="doc-card" href="docs/08_Payment_Gateway_Checkout_and_Financial_Flows.docx"><div class="doc-num">08</div><div><h4>Payment Gateway & Checkout</h4><p>Intent, idempotency, authorization, capture, refund, webhook and reconciliation.</p><span>Open DOCX →</span></div></a>
+<a class="doc-card" href="docs/09_Historical_Data_Lake_Warehouse_Lakehouse_and_Future_AI.docx"><div class="doc-num">09</div><div><h4>Lake, Warehouse & Future AI</h4><p>Bronze/Silver/Gold, lakehouse, marts, feature snapshots and replay/backfill.</p><span>Open DOCX →</span></div></a>
+<a class="doc-card" href="docs/10_Amazon_Type_Ecommerce_Micro_Macro_and_AI_Native_Architecture.docx"><div class="doc-num">10</div><div><h4>Large Marketplace Architecture</h4><p>Amazon-type domain decomposition, micro/macro services and AI-native capabilities.</p><span>Open DOCX →</span></div></a>
+<a class="doc-card" href="docs/11_Environment_CICD_SRE_Performance_and_Observability.docx"><div class="doc-num">11</div><div><h4>Dev → Prod, CI/CD & SRE</h4><p>Environment promotion, resilience, performance, SLOs and production operations.</p><span>Open DOCX →</span></div></a>
+<a class="doc-card" href="docs/12_Learner_Tracks_Fresher_3_5_7_and_Principal.docx"><div class="doc-num">12</div><div><h4>Role-based Learner Tracks</h4><p>Separate expectations for fresher, 3y, 5y, 7y and 7+/Principal.</p><span>Open DOCX →</span></div></a>
+<a class="doc-card" href="docs/13_Hands_On_Labs_Payments_Data_Marketing_and_Production.docx"><div class="doc-num">13</div><div><h4>Hands-on Labs</h4><p>Practical payment, data, marketing and production labs.</p><span>Open DOCX →</span></div></a>
+<a class="doc-card" href="docs/14_Mock_Data_Generator_From_Ground_to_Architect.docx"><div class="doc-num">14</div><div><h4>Mock Data Generator</h4><p>Cross-service synthetic data, chaos scenarios and scale learning.</p><span>Open DOCX →</span></div></a>
+</div>
+</div></section>
+
+<section id="local"><div class="container">
+<h2>4. Local deployment — fastest path</h2>
+<div class="callout"><strong>Recommended first run:</strong> start Java and Python without Docker. Once both work, add Docker infrastructure, then observability. This separates application bugs from Docker/WSL bugs.</div>
+<h3>4.1 Prerequisites</h3>
+<table><tr><th>Tool</th><th>Purpose</th><th>Check</th></tr>
+<tr><td>Python 3.11+</td><td>AI, ML, data and mock services</td><td><code>python --version</code></td></tr>
+<tr><td>Java 21</td><td>Spring Boot commerce service</td><td><code>java -version</code></td></tr>
+<tr><td>Maven</td><td>Java build/test/run</td><td><code>mvn -version</code></td></tr>
+<tr><td>Docker Desktop</td><td>Postgres, Kafka, Redis, Qdrant, observability</td><td><code>docker version</code></td></tr>
+<tr><td>Ollama (optional)</td><td>Local LLM/embeddings</td><td><code>ollama --version</code></td></tr></table>
+
+<h3>4.2 Start Python AI service</h3>
+<div class="code-wrap"><button class="copy" onclick="copyCode(this)">Copy</button><pre><code>cd E:\AI_Commerce_Control_Center\ai-python
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000</code></pre></div>
+<p>Check: <span class="endpoint">http://localhost:8000/health</span> · Swagger: <span class="endpoint">http://localhost:8000/docs</span> · Metrics: <span class="endpoint">http://localhost:8000/metrics</span></p>
+
+<h3>4.3 Start Java commerce service</h3>
+<div class="code-wrap"><button class="copy" onclick="copyCode(this)">Copy</button><pre><code>cd E:\AI_Commerce_Control_Center\backend-java\commerce-core
+mvn test
+mvn spring-boot:run</code></pre></div>
+<p>Check: <span class="endpoint">http://localhost:8080/actuator/health</span> · Metrics: <span class="endpoint">http://localhost:8080/actuator/prometheus</span></p>
+
+<h3>4.4 Run smoke test</h3>
+<div class="code-wrap"><button class="copy" onclick="copyCode(this)">Copy</button><pre><code>cd E:\AI_Commerce_Control_Center
+.\scripts\smoke-test.ps1</code></pre></div>
+
+<h3>4.5 Start data infrastructure</h3>
+<div class="code-wrap"><button class="copy" onclick="copyCode(this)">Copy</button><pre><code>cd E:\AI_Commerce_Control_Center\infra
+docker compose -f docker-compose-data.yml up -d
+docker compose -f docker-compose-data.yml ps</code></pre></div>
+<table><tr><th>Service</th><th>Default local endpoint</th></tr><tr><td>PostgreSQL + pgvector</td><td>localhost:5432</td></tr><tr><td>Redis</td><td>localhost:6379</td></tr><tr><td>Kafka</td><td>localhost:9092</td></tr><tr><td>Qdrant</td><td>http://localhost:6333</td></tr><tr><td>MLflow</td><td>http://localhost:5000</td></tr></table>
+
+<h3>4.6 Start observability</h3>
+<div class="code-wrap"><button class="copy" onclick="copyCode(this)">Copy</button><pre><code>cd E:\AI_Commerce_Control_Center\infra
+docker compose -f docker-compose-observability.yml up -d</code></pre></div>
+<table><tr><td>Grafana</td><td>http://localhost:3000</td></tr><tr><td>Prometheus</td><td>http://localhost:9090</td></tr><tr><td>OTel gRPC</td><td>localhost:4317</td></tr><tr><td>OTel HTTP</td><td>localhost:4318</td></tr></table>
+
+<h3>4.7 Start the parallel learning site</h3>
+<div class="callout warn"><strong>Port note:</strong> Prometheus uses 9090. When the observability stack is running, serve the learning portal on <strong>9100</strong> to avoid a collision.</div>
+<div class="code-wrap"><button class="copy" onclick="copyCode(this)">Copy</button><pre><code>cd E:\AI_Commerce_Control_Center\learning-site
+python -m http.server 9100</code></pre></div>
+<p>Open: <span class="endpoint">http://localhost:9100</span></p>
+</div></section>
+
+<section id="testing"><div class="container">
+<h2>5. Testing the application end to end</h2>
+<h3>Layer 1 — Infrastructure</h3><div class="code-wrap"><button class="copy" onclick="copyCode(this)">Copy</button><pre><code>docker ps
+Test-NetConnection localhost -Port 5432
+Test-NetConnection localhost -Port 6333
+Test-NetConnection localhost -Port 9092</code></pre></div>
+<h3>Layer 2 — Python</h3><div class="code-wrap"><button class="copy" onclick="copyCode(this)">Copy</button><pre><code>cd ai-python
+.\.venv\Scripts\Activate.ps1
+python -m pytest -q
+Invoke-RestMethod http://localhost:8000/health
+Invoke-RestMethod "http://localhost:8000/ai/search?q=laptop"</code></pre></div>
+<h3>Layer 3 — Java</h3><div class="code-wrap"><button class="copy" onclick="copyCode(this)">Copy</button><pre><code>cd backend-java\commerce-core
+mvn test
+Invoke-RestMethod http://localhost:8080/actuator/health
+Invoke-RestMethod http://localhost:8080/api/products</code></pre></div>
+<h3>Layer 4 — Java → Python integration</h3><div class="code-wrap"><button class="copy" onclick="copyCode(this)">Copy</button><pre><code>Invoke-RestMethod "http://localhost:8080/api/ai/search?q=laptop"</code></pre></div>
+<h3>Layer 5 — Full project validator</h3><div class="code-wrap"><button class="copy" onclick="copyCode(this)">Copy</button><pre><code>cd E:\AI_Commerce_Control_Center
+.\scripts\validate-project.ps1</code></pre></div>
+<div class="callout"><strong>Current packaged validation:</strong> Python syntax, 5/5 Python tests, vector-math demo, Bronze→Silver→Gold→features pipeline, mock-data tiny/normal and small/mixed-chaos integrity, JSON/YAML structural checks, learner-site JavaScript syntax and DOCX package integrity passed in the build environment. Full Maven and PowerShell execution must be run on your Windows machine.</div>
+</div></section>
+
+<section id="mock"><div class="container">
+<h2>6. Cross-service mock data</h2>
+<p>The generator creates one consistent synthetic commerce world instead of unrelated CSV files.</p>
+<div class="flow">Customer ──→ Cart ──→ Order ──→ Payment ──→ Shipment
+   │                    │          │             │
+   ├─ Device            ├─ Items   ├─ Webhook    ├─ Tracking
+   ├─ Address           │          └─ Refund     └─ Delivery
+   └─ Loyalty           ▼
+                     Product ← Seller
+                        │
+                        ▼
+                  Inventory ← Warehouse
+                        │
+             ┌──────────┴───────────┐
+             ▼                      ▼
+       Search / Clickstream   Returns / Reviews
+             │                      │
+             └──────────┬───────────┘
+                        ▼
+              ML / DL / RAG / Agents</div>
+<h3>Generate a tiny learning world</h3><div class="code-wrap"><button class="copy" onclick="copyCode(this)">Copy</button><pre><code>cd E:\AI_Commerce_Control_Center\mock-data
+python .\generate_mock_data.py --profile tiny --scenario normal --seed 42 --reset
+python .\validate_mock_data.py</code></pre></div>
+<h3>Generate and feed the historical pipeline</h3><div class="code-wrap"><button class="copy" onclick="copyCode(this)">Copy</button><pre><code>cd E:\AI_Commerce_Control_Center
+.\scripts\generate-mock-data.ps1 -Profile small -Scenario normal -SyncDataPlatform
+.\scripts\run-data-platform.ps1</code></pre></div>
+<h3>Chaos/failure practice</h3>
+<table><tr><th>Scenario</th><th>What to study</th></tr><tr><td>peak-sale</td><td>Scale, latency, inventory contention, caching</td></tr><tr><td>payment-degradation</td><td>Timeout, retry, idempotency, reconciliation</td></tr><tr><td>fraud-attack</td><td>Fraud features, thresholds, analyst workflow</td></tr><tr><td>inventory-shortage</td><td>Reservation, backorder, demand/supply mismatch</td></tr><tr><td>returns-spike</td><td>Reverse logistics, refund and return-risk ML</td></tr><tr><td>mixed-chaos</td><td>Observability, incident triage and architecture resilience</td></tr></table>
+</div></section>
+
+<section id="ai"><div class="container">
+<h2>7. LLM, Vector DB, RAG, Agent & MCP learning path</h2>
+<div class="flow">Text
+ ↓
+Embedding
+ ↓
+Vector [0.12, -0.41, ...]
+ ↓
+Cosine similarity from scratch
+ ↓
+In-memory store
+ ↓
+Qdrant / pgvector
+ ↓
+Chunking + metadata
+ ↓
+Retriever
+ ↓
+Reranker / evaluation
+ ↓
+LLM
+ ↓
+RAG
+ ↓
+LangChain Tools / Agent
+ ↓
+MCP Client ↔ MCP Server
+ ↓
+LangGraph workflow
+ ↓
+Guarded commerce action</div>
+<h3>Vector search from scratch</h3><div class="code-wrap"><button class="copy" onclick="copyCode(this)">Copy</button><pre><code>cd E:\AI_Commerce_Control_Center\ai-python
+python vector_from_scratch_demo.py</code></pre></div>
+<h3>Optional Ollama configuration</h3><div class="code-wrap"><button class="copy" onclick="copyCode(this)">Copy</button><pre><code>ollama pull llama3.2:3b
+ollama pull all-minilm
+$env:OLLAMA_BASE_URL="http://127.0.0.1:11434"
+$env:OLLAMA_MODEL="llama3.2:3b"
+$env:OLLAMA_EMBED_MODEL="all-minilm"</code></pre></div>
+<h3>Vector backend options</h3>
+<table><tr><th>Backend</th><th>Use it to learn</th></tr><tr><td>memory</td><td>Understand vector mechanics without infrastructure.</td></tr><tr><td>qdrant</td><td>Dedicated vector database and indexed semantic search.</td></tr><tr><td>pgvector</td><td>Vector search beside relational commerce data.</td></tr></table>
+<p>Relevant source: <a href="ai-python/app/vectorstores/in_memory.py">in_memory.py</a> · <a href="ai-python/app/vectorstores/qdrant_store.py">qdrant_store.py</a> · <a href="ai-python/app/vectorstores/pgvector_store.py">pgvector_store.py</a> · <a href="ai-python/app/services/rag.py">rag.py</a> · <a href="ai-python/app/mcp/commerce_mcp_server.py">commerce_mcp_server.py</a>.</p>
+</div></section>
+
+<section id="observability"><div class="container">
+<h2>8. Observability & production flow</h2>
+<div class="flow">Request
+   │
+   ▼
+Java trace/span ─────┐
+   │                  │
+   ▼                  │
+Python AI span        │
+   │                  ▼
+   ├────→ OpenTelemetry Collector
+   │                  │
+   ▼                  ├──→ traces
+Model / Vector        ├──→ metrics
+   │                  └──→ logs
+   ▼                       │
+Business result            ▼
+                    Prometheus / Grafana
+
+Model lifecycle:
+Data → Train → Evaluate → Register → Deploy → Monitor → Drift → Retrain
+                             │
+                             ▼
+                           MLflow</div>
+<h3>Environment promotion</h3>
+<div class="flow">Developer Commit
+       ↓
+CI / tests / scan / artifact
+       ↓
+DEV
+       ↓
+QA
+       ↓
+UAT
+       ↓
+PRE-PROD
+       ↓
+PROD
+       ↓
+SLOs / telemetry / rollback / incident response</div>
+<p>Configuration examples: <a href="environments/dev.env.example">Dev</a> · <a href="environments/qa.env.example">QA</a> · <a href="environments/uat.env.example">UAT</a> · <a href="environments/preprod.env.example">Pre-Prod</a> · <a href="environments/prod.env.example">Prod</a>.</p>
+</div></section>
+
+<section id="learning"><div class="container">
+<h2>9. Parallel learning tracks</h2>
+<table><tr><th>Level</th><th>Your target</th><th>Primary labs</th></tr>
+<tr><td>Fresher</td><td>Understand request, JSON, CSV, PK/FK, REST, functions and service boundaries.</td><td>tiny data, catalog, cart, simple payment, Python cleaning.</td></tr>
+<tr><td>3 years</td><td>Build/test APIs, validation, exceptions, retries and feature code.</td><td>small data, checkout, ML endpoint, integration tests.</td></tr>
+<tr><td>5 years</td><td>Own service design, async events, data/AI integration and operational quality.</td><td>medium data, Kafka, warehouse, feature pipelines, MCP/RAG.</td></tr>
+<tr><td>7 years</td><td>Lead distributed architecture, resilience, security, SLOs and migration.</td><td>large/chaos data, observability, performance, rollout strategy.</td></tr>
+<tr><td>7+ / Principal</td><td>Choose boundaries, platforms, standards, cost, governance and organizational adoption.</td><td>large/xlarge thought experiments, ADRs, capacity, DR and AI governance.</td></tr></table>
+<div class="callout"><strong>Learning loop for every feature:</strong> SEE architecture → SAY the flow → RUN the code → CHANGE one requirement → BREAK an assumption → DEBUG → EXPLAIN the production trade-off.</div>
+<p><a class="btn" href="learning-site/index.html">Open the bundled learner site</a></p>
+</div></section>
+
+<section id="source-index"><div class="container">
+<h2>10. Clickable source-code & project file index</h2>
+<p>These links point directly to the files bundled beside this HTML. Use them while studying a guide so you can move from <strong>theory → exact implementation</strong>.</p>
+
+<h3>Java commerce service</h3>
+<div class="docs">
+<a class="doc-card" href="backend-java/commerce-core/pom.xml"><div class="doc-num">J0</div><div><h4>Maven build</h4><p>Dependencies and Java/Spring configuration.</p><span>Open pom.xml →</span></div></a>
+<a class="doc-card" href="backend-java/commerce-core/src/main/java/com/example/aicommerce/AiCommerceApplication.java"><div class="doc-num">J1</div><div><h4>Spring Boot entry point</h4><p>Java application bootstrap.</p><span>Open Java →</span></div></a>
+<a class="doc-card" href="backend-java/commerce-core/src/main/java/com/example/aicommerce/controller/CatalogController.java"><div class="doc-num">J2</div><div><h4>Catalog API</h4><p>Product endpoints.</p><span>Open Java →</span></div></a>
+<a class="doc-card" href="backend-java/commerce-core/src/main/java/com/example/aicommerce/controller/CartController.java"><div class="doc-num">J3</div><div><h4>Cart API</h4><p>Shopping-cart endpoints.</p><span>Open Java →</span></div></a>
+<a class="doc-card" href="backend-java/commerce-core/src/main/java/com/example/aicommerce/controller/CheckoutController.java"><div class="doc-num">J4</div><div><h4>Checkout API</h4><p>Checkout orchestration entry point.</p><span>Open Java →</span></div></a>
+<a class="doc-card" href="backend-java/commerce-core/src/main/java/com/example/aicommerce/service/CheckoutService.java"><div class="doc-num">J5</div><div><h4>Checkout service</h4><p>Server-side amount calculation and checkout idempotency.</p><span>Open Java →</span></div></a>
+<a class="doc-card" href="backend-java/commerce-core/src/main/java/com/example/aicommerce/payment/PaymentGateway.java"><div class="doc-num">J6</div><div><h4>Payment gateway interface</h4><p>Provider-neutral payment boundary.</p><span>Open Java →</span></div></a>
+<a class="doc-card" href="backend-java/commerce-core/src/main/java/com/example/aicommerce/payment/MockPaymentGateway.java"><div class="doc-num">J7</div><div><h4>Mock gateway</h4><p>Safe deterministic local provider simulation.</p><span>Open Java →</span></div></a>
+<a class="doc-card" href="backend-java/commerce-core/src/main/java/com/example/aicommerce/event/KafkaOrderEventPublisher.java"><div class="doc-num">J8</div><div><h4>Kafka event publisher</h4><p>Order event publishing example.</p><span>Open Java →</span></div></a>
+<a class="doc-card" href="backend-java/commerce-core/src/main/java/com/example/aicommerce/mcp/CommerceMcpTools.java"><div class="doc-num">J9</div><div><h4>Java MCP tools</h4><p>Expose existing domain services as governed MCP tools.</p><span>Open Java →</span></div></a>
+</div>
+
+<h3>Python AI service</h3>
+<div class="docs">
+<a class="doc-card" href="ai-python/app/main.py"><div class="doc-num">P0</div><div><h4>FastAPI entry point</h4><p>AI service endpoints and application bootstrap.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="ai-python/app/services/search.py"><div class="doc-num">P1</div><div><h4>Search</h4><p>Search/ranking intelligence.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="ai-python/app/services/recommendation.py"><div class="doc-num">P2</div><div><h4>Recommendations</h4><p>Recommendation logic.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="ai-python/app/services/fraud.py"><div class="doc-num">P3</div><div><h4>Fraud</h4><p>Risk/anomaly model example.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="ai-python/app/services/forecast.py"><div class="doc-num">P4</div><div><h4>Forecasting</h4><p>Demand forecast service.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="ai-python/app/services/churn.py"><div class="doc-num">P5</div><div><h4>Churn</h4><p>Customer retention risk scoring.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="ai-python/app/services/pricing.py"><div class="doc-num">P6</div><div><h4>Pricing</h4><p>Guarded price recommendation.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="ai-python/app/services/returns.py"><div class="doc-num">P7</div><div><h4>Return risk</h4><p>Return prediction example.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="ai-python/app/services/reviews.py"><div class="doc-num">P8</div><div><h4>Review intelligence</h4><p>Sentiment/review analysis.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="ai-python/app/services/marketing.py"><div class="doc-num">P9</div><div><h4>Marketing decisioning</h4><p>Consent-aware next-action example.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="ai-python/app/services/vector_rag.py"><div class="doc-num">V1</div><div><h4>Vector RAG service</h4><p>Index/search/RAG orchestration.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="ai-python/app/services/rag.py"><div class="doc-num">R</div><div><h4>RAG</h4><p>Retriever + LLM grounded-answer flow.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="ai-python/app/services/agent.py"><div class="doc-num">A</div><div><h4>Agent</h4><p>Agentic commerce workflow.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="ai-python/app/mcp/commerce_mcp_server.py"><div class="doc-num">M1</div><div><h4>Python MCP server</h4><p>Current MCP tool exposure.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="ai-python/app/mcp/mcp_client_demo.py"><div class="doc-num">M2</div><div><h4>MCP client demo</h4><p>Client discovery/tool invocation.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="ai-python/app/vectorstores/in_memory.py"><div class="doc-num">V0</div><div><h4>Vector store from scratch</h4><p>Simple in-memory vector search.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="ai-python/app/vectorstores/qdrant_store.py"><div class="doc-num">VQ</div><div><h4>Qdrant adapter</h4><p>Dedicated vector DB implementation.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="ai-python/app/vectorstores/pgvector_store.py"><div class="doc-num">VP</div><div><h4>pgvector adapter</h4><p>Relational + vector implementation.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="ai-python/app/llm/providers.py"><div class="doc-num">L</div><div><h4>LLM provider abstraction</h4><p>Local/provider switching boundary.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="ai-python/app/dl/two_tower.py"><div class="doc-num">D1</div><div><h4>Two-Tower DL</h4><p>Recommendation deep-learning example.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="ai-python/app/dl/demand_lstm.py"><div class="doc-num">D2</div><div><h4>Demand LSTM</h4><p>Sequence forecasting example.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="ai-python/app/dl/fraud_autoencoder.py"><div class="doc-num">D3</div><div><h4>Fraud autoencoder</h4><p>DL anomaly-detection example.</p><span>Open Python →</span></div></a>
+</div>
+
+<h3>Mock data, data lake & warehouse</h3>
+<div class="docs">
+<a class="doc-card" href="mock-data/generate_mock_data.py"><div class="doc-num">G1</div><div><h4>Mock data generator</h4><p>Cross-service synthetic commerce world.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="mock-data/validate_mock_data.py"><div class="doc-num">G2</div><div><h4>Mock data validator</h4><p>Referential-integrity validation.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="mock-data/stream_mock_events.py"><div class="doc-num">G3</div><div><h4>Event streamer</h4><p>Real-time synthetic event simulation.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="data-platform/pipelines/bronze_ingest.py"><div class="doc-num">B</div><div><h4>Bronze ingest</h4><p>Immutable/raw historical ingestion.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="data-platform/pipelines/silver_transform.py"><div class="doc-num">S</div><div><h4>Silver transform</h4><p>Clean/type/deduplicate data.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="data-platform/pipelines/gold_warehouse.py"><div class="doc-num">G</div><div><h4>Gold warehouse</h4><p>Business-ready marts/warehouse.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="data-platform/pipelines/future_features.py"><div class="doc-num">F</div><div><h4>Future features</h4><p>Feature snapshots for future ML processing.</p><span>Open Python →</span></div></a>
+<a class="doc-card" href="data-platform/sql/warehouse_star_schema.sql"><div class="doc-num">SQL</div><div><h4>Warehouse star schema</h4><p>Fact/dimension SQL learning model.</p><span>Open SQL →</span></div></a>
+</div>
+
+<h3>Infrastructure, environments & run scripts</h3>
+<div class="docs">
+<a class="doc-card" href="infra/docker-compose-data.yml"><div class="doc-num">I1</div><div><h4>Data infrastructure Compose</h4><p>Postgres/pgvector, Redis, Kafka, Qdrant and MLflow.</p><span>Open YAML →</span></div></a>
+<a class="doc-card" href="infra/docker-compose-observability.yml"><div class="doc-num">I2</div><div><h4>Observability Compose</h4><p>Telemetry/metrics visualization stack.</p><span>Open YAML →</span></div></a>
+<a class="doc-card" href="infra/otel-collector.yaml"><div class="doc-num">I3</div><div><h4>OTel Collector</h4><p>Telemetry pipeline configuration.</p><span>Open YAML →</span></div></a>
+<a class="doc-card" href="infra/prometheus.yml"><div class="doc-num">I4</div><div><h4>Prometheus config</h4><p>Metrics scraping setup.</p><span>Open YAML →</span></div></a>
+<a class="doc-card" href="environments/README.md"><div class="doc-num">E</div><div><h4>Environment guide</h4><p>Dev, QA, UAT, pre-prod and prod configuration model.</p><span>Open →</span></div></a>
+<a class="doc-card" href="scripts/validate-project.ps1"><div class="doc-num">T</div><div><h4>Full validation script</h4><p>Run the local project checks.</p><span>Open PowerShell →</span></div></a>
+<a class="doc-card" href="scripts/generate-mock-data.ps1"><div class="doc-num">MD</div><div><h4>Generate mock data</h4><p>PowerShell wrapper for learning profiles/scenarios.</p><span>Open PowerShell →</span></div></a>
+<a class="doc-card" href="scripts/run-data-platform.ps1"><div class="doc-num">DP</div><div><h4>Run data platform</h4><p>Execute Bronze→Silver→Gold→features.</p><span>Open PowerShell →</span></div></a>
+<a class="doc-card" href="scripts/payment-lab.ps1"><div class="doc-num">PY</div><div><h4>Payment lab</h4><p>Safe local payment learning workflow.</p><span>Open PowerShell →</span></div></a>
+<a class="doc-card" href="scripts/smoke-test.ps1"><div class="doc-num">ST</div><div><h4>Smoke test</h4><p>Basic Java/Python integration test.</p><span>Open PowerShell →</span></div></a>
+</div>
+
+<h3>Learning portal & contracts</h3>
+<div class="docs">
+<a class="doc-card" href="learning-site/index.html"><div class="doc-num">UI</div><div><h4>Parallel learning portal</h4><p>Fresher → Principal role-based learning view.</p><span>Open HTML →</span></div></a>
+<a class="doc-card" href="architecture/service-evolution.yaml"><div class="doc-num">AR</div><div><h4>Service evolution model</h4><p>Micro/macro/service adoption reference.</p><span>Open YAML →</span></div></a>
+<a class="doc-card" href="contracts/events/order-created.schema.json"><div class="doc-num">C1</div><div><h4>Order-created contract</h4><p>Event contract example.</p><span>Open JSON →</span></div></a>
+<a class="doc-card" href="contracts/events/payment-succeeded.schema.json"><div class="doc-num">C2</div><div><h4>Payment-succeeded contract</h4><p>Payment event contract example.</p><span>Open JSON →</span></div></a>
+<a class="doc-card" href="contracts/agent-commerce/catalog-query.schema.json"><div class="doc-num">AC</div><div><h4>Agent commerce contract</h4><p>Structured AI/tool contract example.</p><span>Open JSON →</span></div></a>
+</div>
+</div></section>
+
+<section id="troubleshooting"><div class="container">
+<h2>11. Troubleshooting checklist</h2>
+<table><tr><th>Problem</th><th>Check</th></tr>
+<tr><td>Java will not start</td><td><code>java -version</code>, <code>mvn -version</code>, port 8080, then <code>mvn test</code>.</td></tr>
+<tr><td>Python import error</td><td>Activate <code>ai-python/.venv</code>, reinstall <code>requirements.txt</code>, run <code>python -m pytest -q</code>.</td></tr>
+<tr><td>Ollama unavailable</td><td><code>ollama list</code>, verify model exists and port 11434 is listening.</td></tr>
+<tr><td>Vector DB failure</td><td>Start data compose; verify 6333 for Qdrant or 5432 for pgvector.</td></tr>
+<tr><td>Prometheus / learning site collision</td><td>Keep Prometheus on 9090 and run learning site on 9100.</td></tr>
+<tr><td>Docker stack does not start</td><td>Run <code>docker compose ... config</code>, inspect port conflicts and Docker Desktop/WSL health.</td></tr>
+<tr><td>Mock data validation fails</td><td>Regenerate with fixed seed and <code>--reset</code>, then run validator.</td></tr>
+<tr><td>Payment retry creates duplicates</td><td>Inspect checkout idempotency key and payment intent mapping.</td></tr>
+<tr><td>Wrong AI answer</td><td>Separate retrieval failure, tool failure, routing failure and generation failure.</td></tr></table>
+<div class="callout"><strong>Debug order:</strong> infrastructure → process/port → API → data/schema → model/tool → orchestration → UI. Test the smallest failing layer first.</div>
+<h3>Stop Docker stacks</h3>
+<div class="code-wrap"><button class="copy" onclick="copyCode(this)">Copy</button><pre><code>cd E:\AI_Commerce_Control_Center\infra
+docker compose -f docker-compose-observability.yml down
+docker compose -f docker-compose-data.yml down</code></pre></div>
+</div></section>
+
+<footer><div class="container"><strong>AI Commerce Control Center</strong><br><span>Single offline Zero-to-Master bundle for local learning, hands-on testing, debugging and interview/trainer preparation. All payment/customer data is synthetic/training-only.</span></div></footer>
+<script>
+function copyCode(btn){const c=btn.parentElement.querySelector('code').innerText;navigator.clipboard.writeText(c).then(()=>{const old=btn.innerText;btn.innerText='Copied';setTimeout(()=>btn.innerText=old,1200)})}
+</script>
+
+<section id="docker-single-click"><div class="container"><h2>Single-click Docker local deployment</h2><p><strong>Auto mode:</strong> double-click <code>START_LOCAL_DOCKER.bat</code> or <code>START_FULL_LOCAL_DOCKER.bat</code>. The launcher tries preferred ports first and automatically moves to another free host port when needed.</p><p><strong>Interactive mode:</strong> use the interactive launchers when you want to approve or type each host port yourself. Occupied and duplicate ports are rejected before Docker starts.</p><div class="actions"><a class="btn" href="START_LOCAL_DOCKER.bat">Core auto ports</a><a class="btn secondary" href="START_FULL_LOCAL_DOCKER.bat">Full auto ports</a><a class="btn secondary" href="START_LOCAL_DOCKER_INTERACTIVE.bat">Core choose ports</a><a class="btn secondary" href="START_FULL_LOCAL_DOCKER_INTERACTIVE.bat">Full choose ports</a><a class="btn secondary" href="SHOW_SELECTED_PORTS.bat">Show selected ports</a><a class="btn secondary" href="DOCKER_LOCAL_DEPLOYMENT.md">Docker runbook</a><a class="btn secondary" href="PORT_SELECTION_GUIDE.md">Port selection guide</a><a class="btn secondary" href="infra/docker-compose.local.yml">Unified Compose</a></div><pre>START_LOCAL_DOCKER.bat
+  ↓
+Docker pre-check
+  ↓
+Auto port selection → .env.local
+  ↓
+Build Java + Python
+  ↓
+Postgres + Redis + Kafka + Qdrant
+  ↓
+Commerce Java + AI Python + Learning Site
+  ↓
+Health URLs printed + browser opened</pre></div></section>
+
+<section id="v13-fix" style="margin:24px 0;padding:18px;border:1px solid #ccc;border-radius:12px">
+<h2>v1.3 Java Docker startup fix</h2>
+<p>Fixes the Spring Boot startup error where <code>AiServiceClient</code> could not obtain a <code>RestClient.Builder</code>. The project now registers the builder explicitly and includes a regression test.</p>
+<p><a href="FIX_NOTES_v1.3.md">Read the v1.3 fix notes</a></p>
+</section>
+</body></html>

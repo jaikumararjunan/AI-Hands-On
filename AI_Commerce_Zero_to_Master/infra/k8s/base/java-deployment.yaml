@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: commerce-core
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: commerce-core}
+  template:
+    metadata:
+      labels: {app: commerce-core}
+    spec:
+      containers:
+        - name: commerce-core
+          image: example/commerce-core:0.2.0
+          ports: [{containerPort: 8080}]
+          env:
+            - name: AI_SERVICE_URL
+              value: http://ai-python:8000
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: deployment.environment.name=development,service.version=0.2.0
+          readinessProbe:
+            httpGet: {path: /actuator/health/readiness, port: 8080}
+            initialDelaySeconds: 10
+          livenessProbe:
+            httpGet: {path: /actuator/health/liveness, port: 8080}
+            initialDelaySeconds: 30
+          resources:
+            requests: {cpu: "200m", memory: "256Mi"}
+            limits: {cpu: "1000m", memory: "768Mi"}

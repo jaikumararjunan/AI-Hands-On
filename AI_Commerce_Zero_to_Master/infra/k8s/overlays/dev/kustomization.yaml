@@ -1,0 +1,23 @@
+resources:
+  - ../../base
+nameSuffix: -dev
+replicas:
+  - name: commerce-core
+    count: 1
+  - name: ai-python
+    count: 1
+patches:
+  - target:
+      kind: Deployment
+      name: commerce-core
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/env/1/value
+        value: deployment.environment.name=dev,service.version=0.2.0
+  - target:
+      kind: Deployment
+      name: ai-python
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/env/1/value
+        value: deployment.environment.name=dev,service.version=0.2.0

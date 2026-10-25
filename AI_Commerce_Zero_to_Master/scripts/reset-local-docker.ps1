@@ -1,0 +1,2 @@
+param([switch]$Yes)
+$Root=(Resolve-Path (Join-Path $PSScriptRoot '..')).Path; $Compose=Join-Path $Root 'infra\docker-compose.local.yml'; $Env=Join-Path $Root '.env.local'; if(!(Test-Path $Env)){throw 'No .env.local found.'}; if(-not $Yes){$a=Read-Host 'This deletes AI Commerce Docker volumes/data. Type RESET'; if($a -ne 'RESET'){exit}}; docker compose --env-file $Env -f $Compose --profile full down -v --remove-orphans

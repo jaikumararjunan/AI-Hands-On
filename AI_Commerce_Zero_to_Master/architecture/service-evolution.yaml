@@ -1,0 +1,17 @@
+stages:
+  - name: modular-monolith
+    use_when: "small team, high product uncertainty"
+    strengths: ["simple transactions", "fast local development", "low operational cost"]
+    risks: ["shared scaling", "coupling if module boundaries are weak"]
+  - name: domain-services
+    use_when: "clear bounded contexts need independent release/scale"
+    strengths: ["team ownership", "targeted scaling", "fault isolation"]
+    risks: ["network latency", "distributed consistency", "operational overhead"]
+  - name: macro-services
+    use_when: "domain-oriented groups want fewer runtime components than fine-grained microservices"
+    strengths: ["lower ops overhead", "cohesive domain deployment"]
+    risks: ["larger blast radius", "coarser independent scaling"]
+  - name: platformized-microservices
+    use_when: "large organization can invest in golden paths and SRE/platform engineering"
+    strengths: ["independent domain evolution", "standardized delivery/observability"]
+    risks: ["platform complexity", "organizational cost"]

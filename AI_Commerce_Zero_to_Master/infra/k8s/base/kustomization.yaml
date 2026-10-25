@@ -1,0 +1,4 @@
+resources:
+  - java-deployment.yaml
+  - python-deployment.yaml
+  - services.yaml

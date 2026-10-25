@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OrderCreated",
+  "type": "object",
+  "required": [
+    "orderId",
+    "customerId",
+    "total",
+    "createdAt"
+  ],
+  "properties": {
+    "orderId": {
+      "type": "string"
+    },
+    "customerId": {
+      "type": "string"
+    },
+    "total": {
+      "type": "number"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

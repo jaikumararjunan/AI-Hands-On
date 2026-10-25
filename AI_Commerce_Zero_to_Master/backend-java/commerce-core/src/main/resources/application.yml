@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: commerce-core
+  ai:
+    mcp:
+      server:
+        name: commerce-core-mcp
+        version: 0.1.0
+        type: SYNC
+        protocol: STREAMABLE
+
+server:
+  port: 8080
+
+app:
+  payment:
+    gateway: ${PAYMENT_GATEWAY:mock}
+    timeout-ms: ${PAYMENT_TIMEOUT_MS:3000}
+  ai:
+    base-url: ${AI_SERVICE_URL:http://localhost:8000}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true

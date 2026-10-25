@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CartUpdate",
+  "type": "object",
+  "required": [
+    "customerId",
+    "productId",
+    "quantity"
+  ],
+  "properties": {
+    "customerId": {
+      "type": "string"
+    },
+    "productId": {
+      "type": "string"
+    },
+    "quantity": {
+      "type": "integer",
+      "minimum": 1
+    }
+  }
+}

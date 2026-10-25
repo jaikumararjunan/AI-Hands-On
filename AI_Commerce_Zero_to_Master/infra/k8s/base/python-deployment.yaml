@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-python
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: ai-python}
+  template:
+    metadata:
+      labels: {app: ai-python}
+    spec:
+      containers:
+        - name: ai-python
+          image: example/ai-python:0.2.0
+          ports: [{containerPort: 8000}]
+          env:
+            - name: VECTOR_BACKEND
+              value: memory
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: deployment.environment.name=development,service.version=0.2.0
+          readinessProbe:
+            httpGet: {path: /health, port: 8000}
+            initialDelaySeconds: 5
+          resources:
+            requests: {cpu: "200m", memory: "256Mi"}
+            limits: {cpu: "1500m", memory: "1Gi"}

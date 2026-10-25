@@ -1,6 +1,4 @@
-import os
-
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, Request
 
 from app.models import FraudRequest, ForecastRequest, AgentRequest, PricingRequest, ChurnRequest, ReturnRiskRequest, ReviewRequest, MarketingDecisionRequest, CampaignSuggestionRequest
 from app.services.search import SemanticSearchService
@@ -21,8 +19,24 @@ from app.observability import configure_prometheus, configure_opentelemetry
 app = FastAPI(
     title="AI Commerce Intelligence Service",
     version="0.1.0",
-    root_path=os.getenv("FASTAPI_ROOT_PATH", ""),
 )
+
+
+@app.middleware("http")
+async def forwarded_prefix_root_path(request: Request, call_next):
+    """Honor a reverse-proxy prefix only for the current proxied request.
+
+    The commerce storefront exposes Python under /python, while the Python
+    container is also directly reachable on its own host port. Using the
+    forwarded prefix per request keeps both Swagger URLs valid:
+      - http://localhost:<APP_PORT>/python/docs
+      - http://localhost:<AI_PORT>/docs
+    """
+    prefix = request.headers.get("x-forwarded-prefix", "").rstrip("/")
+    if prefix:
+        request.scope["root_path"] = prefix
+    return await call_next(request)
+
 
 search_service = SemanticSearchService()
 recommendation_service = RecommendationService()

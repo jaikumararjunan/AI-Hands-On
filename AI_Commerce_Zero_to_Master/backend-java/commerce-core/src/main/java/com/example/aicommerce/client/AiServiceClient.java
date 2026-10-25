@@ -1,6 +1,7 @@
 package com.example.aicommerce.client;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
@@ -21,6 +22,7 @@ public class AiServiceClient {
     public Map<String, Object> semanticSearch(String query) {
         return client.get()
                 .uri(uri -> uri.path("/ai/search").queryParam("q", query).build())
+                .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .body(Map.class);
     }
@@ -30,6 +32,8 @@ public class AiServiceClient {
         try {
             Map<String, Object> response = client.post()
                     .uri("/ai/agent/ask")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
                     .body(Map.of("question", question == null ? "" : question))
                     .retrieve()
                     .body(Map.class);
@@ -41,13 +45,15 @@ public class AiServiceClient {
                             "degraded", true)
                     : response;
         } catch (RestClientResponseException error) {
+            String responseBody = error.getResponseBodyAsString();
             return Map.of(
                     "route", "error",
                     "answer", "The Python AI service returned HTTP " + error.getStatusCode().value()
                             + ". Check ai-python logs for the detailed cause.",
                     "degraded", true,
                     "downstreamStatus", error.getStatusCode().value(),
-                    "diagnostic", error.getClass().getSimpleName());
+                    "diagnostic", error.getClass().getSimpleName(),
+                    "downstreamBody", responseBody == null ? "" : responseBody);
         } catch (RestClientException error) {
             return Map.of(
                     "route", "error",
@@ -61,6 +67,7 @@ public class AiServiceClient {
     public Map<String, Object> recommendations(String customerId) {
         return client.get()
                 .uri("/ai/recommendations/{customerId}", customerId)
+                .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .body(Map.class);
     }

@@ -1,0 +1,13 @@
+AI COMMERCE ZERO TO MASTER — BUNDLE VALIDATION
+
+Entry point: START_HERE.html
+Windows launcher: OPEN_START_HERE.bat
+Total bundled files: 213
+Relative file hrefs validated: 78
+Internal page anchors validated: 12
+External/localhost runtime links: 8
+Broken relative hrefs: 0
+
+Status: PASS
+
+Note: localhost links require the corresponding local service to be running.

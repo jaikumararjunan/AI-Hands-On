@@ -1,0 +1,23 @@
+AI Commerce Docker v1.2 validation
+==================================
+
+Changes:
+- Auto host-port fallback retained.
+- Added interactive host-port selection for core and full stacks.
+- Added duplicate-port validation.
+- Added free-port scan fallback beyond fixed candidates.
+- Added SHOW_SELECTED_PORTS.bat.
+- Added PORT_SELECTION_GUIDE.md.
+- Docker status now prints selected ports + Python/Java logs.
+- Python vector backend initialization changed to lazy startup so FastAPI health does not depend on Qdrant/pgvector readiness.
+- Python Docker healthcheck start window increased for slower Windows Docker Desktop first starts.
+- Startup failure now automatically prints ai-python diagnostics.
+
+Static validation in build environment:
+- Python syntax: PASS (44 files).
+- YAML parsing: PASS, including multi-document Kubernetes YAML.
+- START_HERE.html relative links: PASS, 0 broken.
+- AI_Commerce_Master_Guide.html relative links: PASS, 0 broken.
+
+Runtime limitation:
+- This build environment has no Windows PowerShell and no Docker daemon, so .bat/.ps1 execution and Docker runtime startup must be validated on the user's Windows Docker Desktop machine.

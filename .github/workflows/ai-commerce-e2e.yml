@@ -1,0 +1,92 @@
+name: AI Commerce E2E
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'AI_Commerce_Zero_to_Master/**'
+      - '.github/workflows/ai-commerce-e2e.yml'
+
+jobs:
+  docker-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: AI_Commerce_Zero_to_Master
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Write deterministic CI ports
+        shell: bash
+        run: |
+          cat > .env.local <<'EOF'
+          JAVA_PORT=18080
+          AI_PORT=18000
+          APP_PORT=19200
+          LEARNING_PORT=19100
+          POSTGRES_PORT=15432
+          REDIS_PORT=16379
+          QDRANT_PORT=16333
+          QDRANT_GRPC_PORT=16334
+          KAFKA_PORT=19092
+          MLFLOW_PORT=15000
+          PROMETHEUS_PORT=19090
+          GRAFANA_PORT=13000
+          OTEL_GRPC_PORT=14317
+          OTEL_HTTP_PORT=14318
+          OTEL_METRICS_PORT=19464
+          OLLAMA_BASE_URL=http://host.docker.internal:11434
+          OLLAMA_MODEL=llama3.2:3b
+          OTEL_EXPORTER_OTLP_ENDPOINT=
+          EOF
+
+      - name: Validate Compose
+        run: docker compose --env-file .env.local -f infra/docker-compose.local.yml config
+
+      - name: Build and start application stack
+        run: docker compose --env-file .env.local -f infra/docker-compose.local.yml up -d --build --remove-orphans
+
+      - name: Wait for storefront
+        shell: bash
+        run: |
+          for i in $(seq 1 90); do
+            if curl -fsS http://localhost:19200/ >/dev/null; then
+              echo 'Storefront is ready.'
+              exit 0
+            fi
+            sleep 2
+          done
+          echo 'Storefront did not become ready.'
+          docker compose --env-file .env.local -f infra/docker-compose.local.yml ps -a
+          exit 1
+
+      - name: Run browser-path E2E suite
+        shell: pwsh
+        run: ./scripts/test-application.ps1
+
+      - name: Container status
+        if: always()
+        run: docker compose --env-file .env.local -f infra/docker-compose.local.yml ps -a
+
+      - name: Docker logs on failure
+        if: failure()
+        shell: bash
+        run: |
+          mkdir -p ci-artifacts
+          docker compose --env-file .env.local -f infra/docker-compose.local.yml logs --no-color > ci-artifacts/docker-compose.log 2>&1 || true
+          docker compose --env-file .env.local -f infra/docker-compose.local.yml ps -a > ci-artifacts/docker-ps.txt 2>&1 || true
+
+      - name: Upload failure diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-commerce-e2e-diagnostics
+          path: AI_Commerce_Zero_to_Master/ci-artifacts/
+          if-no-files-found: ignore
+
+      - name: Shut down stack
+        if: always()
+        run: docker compose --env-file .env.local -f infra/docker-compose.local.yml down -v --remove-orphans

@@ -1,6 +1,6 @@
 # AI Commerce Zero to Master — Direct Source Tree v1.4
 
-This folder now contains the **actual browsable source files directly in GitHub**. No extraction step, base64 payload, tar archive, or source-payload indirection is required.
+This folder contains the **actual browsable source files directly in GitHub**. No extraction step, base64 payload, tar archive, or source-payload indirection is required.
 
 ## Main source areas
 

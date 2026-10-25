@@ -1,5 +1,3 @@
-import os
-
 from fastapi.testclient import TestClient
 
 from app.main import app, agent_service
@@ -11,9 +9,18 @@ def test_openapi_document_has_supported_version_and_agent_path():
     assert "/ai/agent/ask" in document.get("paths", {})
 
 
-def test_fastapi_root_path_is_configurable_for_reverse_proxy():
-    expected = os.getenv("FASTAPI_ROOT_PATH", "")
-    assert app.root_path == expected
+def test_direct_swagger_uses_direct_openapi_path():
+    client = TestClient(app)
+    response = client.get("/docs")
+    assert response.status_code == 200
+    assert "url: '/openapi.json'" in response.text
+
+
+def test_proxied_swagger_honors_forwarded_prefix():
+    client = TestClient(app)
+    response = client.get("/docs", headers={"X-Forwarded-Prefix": "/python"})
+    assert response.status_code == 200
+    assert "url: '/python/openapi.json'" in response.text
 
 
 def test_agent_endpoint_accepts_question_json(monkeypatch):

@@ -45,7 +45,6 @@ services:
       OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
       OLLAMA_MODEL: ${OLLAMA_MODEL:-llama3.2:3b}
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:-}
-      FASTAPI_ROOT_PATH: /python
     ports: ["${AI_PORT:-8000}:8000"]
     depends_on:
       postgres: { condition: service_healthy }

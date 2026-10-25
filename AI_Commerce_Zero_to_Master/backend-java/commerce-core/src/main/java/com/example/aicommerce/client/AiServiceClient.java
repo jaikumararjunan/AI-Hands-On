@@ -3,6 +3,8 @@ package com.example.aicommerce.client;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestClientResponseException;
 
 import java.util.Map;
 
@@ -25,11 +27,34 @@ public class AiServiceClient {
 
     @SuppressWarnings("unchecked")
     public Map<String, Object> askAgent(String question) {
-        return client.post()
-                .uri("/ai/agent/ask")
-                .body(Map.of("question", question))
-                .retrieve()
-                .body(Map.class);
+        try {
+            Map<String, Object> response = client.post()
+                    .uri("/ai/agent/ask")
+                    .body(Map.of("question", question == null ? "" : question))
+                    .retrieve()
+                    .body(Map.class);
+
+            return response == null
+                    ? Map.of(
+                            "route", "error",
+                            "answer", "The Python AI service returned an empty response.",
+                            "degraded", true)
+                    : response;
+        } catch (RestClientResponseException error) {
+            return Map.of(
+                    "route", "error",
+                    "answer", "The Python AI service returned HTTP " + error.getStatusCode().value()
+                            + ". Check ai-python logs for the detailed cause.",
+                    "degraded", true,
+                    "downstreamStatus", error.getStatusCode().value(),
+                    "diagnostic", error.getClass().getSimpleName());
+        } catch (RestClientException error) {
+            return Map.of(
+                    "route", "error",
+                    "answer", "The Java commerce service could not reach the Python AI service.",
+                    "degraded", true,
+                    "diagnostic", error.getClass().getSimpleName());
+        }
     }
 
     @SuppressWarnings("unchecked")

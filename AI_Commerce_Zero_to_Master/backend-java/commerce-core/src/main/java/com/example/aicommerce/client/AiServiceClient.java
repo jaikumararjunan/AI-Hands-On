@@ -30,11 +30,12 @@ public class AiServiceClient {
     @SuppressWarnings("unchecked")
     public Map<String, Object> askAgent(String question) {
         try {
+            String payload = "{\"question\":" + jsonString(question == null ? "" : question) + "}";
             Map<String, Object> response = client.post()
                     .uri("/ai/agent/ask")
                     .contentType(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
-                    .body(Map.of("question", question == null ? "" : question))
+                    .body(payload)
                     .retrieve()
                     .body(Map.class);
 
@@ -70,5 +71,29 @@ public class AiServiceClient {
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .body(Map.class);
+    }
+
+    private static String jsonString(String value) {
+        StringBuilder result = new StringBuilder(value.length() + 2).append('"');
+        for (int i = 0; i < value.length(); i++) {
+            char c = value.charAt(i);
+            switch (c) {
+                case '"' -> result.append("\\\"");
+                case '\\' -> result.append("\\\\");
+                case '\b' -> result.append("\\b");
+                case '\f' -> result.append("\\f");
+                case '\n' -> result.append("\\n");
+                case '\r' -> result.append("\\r");
+                case '\t' -> result.append("\\t");
+                default -> {
+                    if (c < 0x20) {
+                        result.append(String.format("\\u%04x", (int) c));
+                    } else {
+                        result.append(c);
+                    }
+                }
+            }
+        }
+        return result.append('"').toString();
     }
 }
